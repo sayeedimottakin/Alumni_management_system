@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="update_profile_form">
+    <div class="container">
+        <h2>Update Profile Form</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="full_name">Full Name:</label>
+                        {{ form.full_name }}
+                    </div>
+                    <div class="form-group">
+                        <label for="profile_picture">Select a profile picture:</label><br>
+                        {{ form.image }}
+                    </div>
+                    <div class="form-group">
+                        <label for="certificate">Select your graduation certificate:</label><br>
+                        {{ form.certificate }}
+                    </div>
+                    <div class="form-group">
+                        <label for="discipline">Discipline (select one):</label>
+                        {{ form.discipline }}
+                    </div>
+                    <div class="form-group">
+                        <label for="batch">Batch (select one):</label>
+                        {{ form.batch}}
+                    </div>
+                    <div class="form-group">
+                        <label for="id">ID (select one):</label>
+                        {{ form.student_id }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id">Job type:</label>
+                        {{ form.job_type }}
+                    </div>
+                    <div class="form-group">
+                        <label for="about_me">Job Poistion:</label>
+                        {{ form.job_position }}
+                    </div>
+                    <div class="form-group">
+                        <label for="about_me">Company Name:</label>
+                        {{ form.company_name }}
+                    </div>
+                    
+                    
+                    <button type="submit" value="Update" class="btn btn-success">Submit</button>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="higher_study">Higher Study:</label>
+                        {{ form.higher_study}}
+                    </div>
+                    <div class="form-group">
+                        <label for="present_address">Present Address:</label>
+                        {{ form.present_address }}
+                    </div>
+                    <div class="form-group">
+                        <label for="present_country">Present Country (select one):</label>
+                        {{ form.present_country }}
+                    </div>
+                    <div class="form-group">
+                        <label for="Parmanent_address">Parmanent Address:</label>
+                        {{ form.prmanent_address }}
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile:</label>
+                        {{ form.mobile}}
+                    </div>
+                    <div class="form-group">
+                        <label for="facebook">Facebook For Contact:</label>
+                        {{ form.facebook }}
+                    </div>
+                    <div class="form-group">
+                        <label for="linkdin">Linkdin For Contact:</label>
+                        {{ form.linkdin }}
+                    </div>
+                    <div class="form-group">
+                        <label for="linkdin">Social Media Links:</label>
+                        {{ form.social_media_links }}
+                    </div>
+                    <div class="form-group">
+                        <label for="about_me">About Me:</label>
+                        {{ form.about_me}}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

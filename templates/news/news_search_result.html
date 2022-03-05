@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div style="background-color: lightgrey;">
+    <div class="container text-center">
+        {% if news_list %}
+        <button class="m-2 btn btn-success btn-lg py-0" style="font-weight: 600;"><span class="badge badge-light">{{news_list|length}}</span> Result{{ news_list|pluralize:",s" }} Found</button>
+        <div class="row">
+            {% for news in news_list %}
+            <div class="col-lg-4 col-md-6 my-2">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h4 class="card-title text-dark">{{news.headline}}</h4>
+                  <p class="card-text">{{news.description| slice:":20"}}..</p>
+                  <a href="{% url 'news_details' news.id %}" class="card-link">Read More</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <button class="m-2 btn btn-danger btn-lg py-0" style="font-weight: 600;">Sorry!!! No Results Found</button>
+          {% endif %}
+
+    </div>
+</div>
+{% endblock %}

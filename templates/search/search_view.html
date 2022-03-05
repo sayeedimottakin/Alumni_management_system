@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="search_view p-5" style="background-color: lightgrey;">
+    <div class="container">
+        <h1 class="title">Search For Alumni</h1>
+        <form action="{% url 'search_result' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sel1">Select Discipline(select one):</label>
+                        <select class="form-control" id="sel1" name="discipline">
+                            {% for dip in disciplines %}
+                            <option value="{{dip}}">{{dip}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sel1">Select Batch(select one):</label>
+                        <select class="form-control" id="sel1" name="batch">
+                            {% for bat in batch %}
+                            <option value="{{bat}}">{{bat}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="sel1">Select ID(select one):</label>
+                        <select class="form-control" id="sel1" name="id">
+                            {% for id in Ids %}
+                            <option value="{{id}}">{{id}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div> -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sel1">Select Country(select one):</label>
+                        <select class="form-control" id="sel1" name="country">
+                            {% for c in country %}
+                            <option value="{{c}}">{{c}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-danger btn-lg" style="float: right;">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

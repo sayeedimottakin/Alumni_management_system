@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="search_results">
+  <h1 style="padding-top: 20px;
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Search Results</h1>
+  <div class="container">
+    {% if context %}
+    {% for key,values in context.items %}
+    <h4 style="padding: 10px 0;color:seagreen;font-family:sans-serif;font-weight: 700;">
+      <span class="badge badge-danger">{{values|length}}</span> Result{{ values|pluralize:",s" }} Found In {{key}}:</h4>
+    <table class="table table-secondary table-hover">
+      <thead>
+        <tr>
+          <th>Full Name</th>
+          <th>Discipline</th>
+          <th>Batch</th>
+          <th>Id</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody style="font-weight: 600;">
+        {% for profile in values %}
+        <tr>
+          <td>{{profile.full_name}}</td>
+          <td>{{profile.discipline}}</td>
+          <td>{{profile.batch}}</td>
+          <td>{{profile.student_id}}</td>
+          <td><a href="{% url 'search_result_details' profile.id %}"><button class="btn btn-success btn-sm">Details</button></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endfor %}
+    {% else %}
+    <h3 style="text-align: center;color: red;padding: 20px;">Sorry!!!Results Not Found</h3>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

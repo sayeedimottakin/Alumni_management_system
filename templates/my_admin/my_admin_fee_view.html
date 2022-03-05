@@ -1,0 +1,181 @@
+{% extends "my_admin/base.html" %}
+{% load static %}
+{% block content %}
+<div class="bg-dark text-light">
+    <div style="text-align: center;">
+        <h5>Present Fees</h5>
+        <h5><button type="button" class="btn btn-secondary">
+                Registration Fee: <span class="badge badge-light">{{fee.registration_fee}}</span> Taka
+            </button></h5>
+        <h5><button type="button" class="btn btn-secondary">
+                Yearly Fee: <span class="badge badge-light">{{fee.yearly_fee}}</span> Taka
+            </button></h5>
+        <h5><button type="button" class="btn btn-secondary">
+                Life Time Fee: <span class="badge badge-light">{{fee.life_time_fee}}</span> Taka
+            </button></h5>
+        <form style="text-align: center;">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Change
+            </button>
+        </form>
+    </div>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Current Fees</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="color: wheat;">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form action="{% url 'admin_fee_view' %}" method="POST">
+                        {% csrf_token %}
+                        {{form}}
+                        <br>
+                        <input type="submit" value="Done" class="btn btn-success">
+                    </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <hr style="background-color: wheat;">
+        <h4 style="text-align: center;">Due Registration Fees <button type="button" class="btn btn-success"
+                data-toggle="modal" data-target="#due_reg_fee">
+                Send Notification
+            </button></h4>
+        <div class="modal fade" id="due_reg_fee">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Send Notification For Registration Fee Due</h5>
+                        <button type="button" class="close" data-dismiss="modal" style="color: wheat;">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form action="{% url 'send_notification_reg_fee' %}" method="POST">
+                            {% csrf_token %}
+                            <label for="message" style="font-size: large;">Message:</label>
+                            <textarea name="message" id="message" rows="3" class="form-control"></textarea>
+                            <br>
+                            <label for="alumni_name" style="font-size: large;">Select Alumni:</label>
+                            <br>
+                            <input type="checkbox" id="myCheck" onclick="myFunction()"> Select All<br>
+                            {% for x in alumni_fee %}
+                            <input type="checkbox" name="alumni_name" value="{{x.alumni.user.id}}">
+                            {{x.alumni.full_name}}<br>
+                            {% endfor %}
+                            <br>
+                            <input type="submit" value="Done" class="btn btn-success">
+
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <table class="table table-dark table-hover table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Discipline</th>
+                    <th>Student Id</th>
+                    <th>Batch</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for x in alumni_fee %}
+                <tr>
+                    <td>{{x.alumni.full_name}}</td>
+                    <td>{{x.alumni.discipline}}</td>
+                    <td>{{x.alumni.student_id}}</td>
+                    <td>{{x.alumni.batch}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr style="background-color: wheat;">
+        <h4 style="text-align: center;">Due Yearly Fees <button type="button" class="btn btn-success"
+                data-toggle="modal" data-target="#due_yearly_fee">
+                Send Notification
+            </button></h4>
+        <div class="modal fade" id="due_yearly_fee">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Send Notification For Yearly Fee Due</h5>
+                        <button type="button" class="close" data-dismiss="modal" style="color: wheat;">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form action="{% url 'send_notification_yearly_fee' %}" method="POST">
+                            {% csrf_token %}
+                            <label for="message" style="font-size: large;">Message:</label>
+                            <textarea name="message" id="message" rows="3" class="form-control"></textarea>
+                            <br>
+                            <label for="alumni_name1" style="font-size: large;">Select Alumni:</label>
+                            <br>
+                            <input type="checkbox" id="myCheck1" onclick="myFunction1()"> Select All<br>
+                            {% for x in yearly_fee %}
+                            <input type="checkbox" name="alumni_name1" value="{{x.alumni_fee.alumni.user.id}}">
+                            {{x.alumni_fee.alumni.full_name}}<br>
+                            {% endfor %}
+                            <br>
+                            <input type="submit" value="Done" class="btn btn-success">
+
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <table class="table table-dark table-hover table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Discipline</th>
+                    <th>Student Id</th>
+                    <th>Batch</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for x in yearly_fee %}
+                <tr>
+                    <td>{{x.alumni_fee.alumni.full_name}}</td>
+                    <td>{{x.alumni_fee.alumni.discipline}}</td>
+                    <td>{{x.alumni_fee.alumni.student_id}}</td>
+                    <td>{{x.alumni_fee.alumni.batch}}</td>
+                    <td>{{x.year}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

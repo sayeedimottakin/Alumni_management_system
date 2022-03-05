@@ -1,0 +1,50 @@
+{% extends "my_admin/base.html" %}
+{% load static %}
+{% block content %}
+<div class="event_details bg-dark text-light">
+    <div class="container">
+        <h3 style="padding-top: 20px;
+        text-align: center;">Event Details</h3>
+        <h4 style="text-align: center;">{{event.headline}}</h4>
+        <hr>
+        <h6><span style="font-weight: 500;">Description:</span> {{event.description}}</h6>
+        <h6><span style="font-weight: 500;">Targeted Amount:</span> <span class="badge badge-primary" style="font-size: large;">{{event.target_amount}}</span></h6>
+        <h6><span style="font-weight: 500;">Present Amount:</span> <span class="badge badge-success" style="font-size: large;">{{event.present_amount}}</span></h6>
+
+        <!-- <form class="form-inline" action="{% url 'add_money' event.id %}" method="POST">
+            {% csrf_token %}
+            <input type="number" name="amount" placeholder="Enter Amount" class="form-control">
+            <input type="submit" value="Send Money" class="btn btn-secondary">
+        </form>  -->
+
+        <h3 style="font-weight: 700;text-align: center;">Contributers</h3>
+        <div style="overflow-y: auto;">
+            <table class="table table-dark table-hover">
+                <thead>
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Discipline</th>
+                    <th>Batch</th>
+                    <th>Id</th>
+                    <th>Amount</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody style="font-weight: 600;">
+                  {% for contributer in contributers %}
+                  <tr>
+                    <td>{{contributer.alumni.full_name}}</td>
+                    <td>{{contributer.alumni.discipline}}</td>
+                    <td>{{contributer.alumni.batch}}</td>
+                    <td>{{contributer.alumni.student_id}}</td>
+                    <td>{{contributer.amount}}</td>
+                    <td>{{contributer.created_on}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

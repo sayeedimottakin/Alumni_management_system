@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container emp-profile">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <img src="{{profile.image.url}}" alt="profile image"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                            <h4>
+                                {{profile.full_name}}
+                            </h4>
+                            <h6>
+                                {{profile.discipline}} Discipline
+                            </h6>
+                            <h6>
+                                Student Id: {{profile.student_id}}
+                            </h6>
+                            <!-- <a  href="{{profile.certificate.url}}" download> Download Document </a> -->
+                </div>
+            </div>
+            <!-- {% if hasProfile %}
+            <div class="col-md-2">
+                <a href="{% url 'profile_update' user.id %}" class="btn btn-success">Edit Profile</a>
+            </div>
+            {% else %}
+            <div class="col-md-2">
+                <a href="{% url 'create_profile' user.id %}" class="btn btn-danger">Complete Profile</a>
+            </div>
+            {% endif %} -->
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-work" style="padding-top: 10px;">
+                    <h5>About Me</h5>
+                    <p>{{profile.about_me}}</p>  
+                </div>
+                <!-- <div class="profile-work">
+                    <h5>Show-Case</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, fugiat.</p>
+                </div> -->
+            </div>
+            <div class="col-md-8">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Address & Contact</a>
+                    </li>
+                </ul>
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Full Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.full_name}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>User_Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.user}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Batch</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.batch}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Job</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.job_position}} ({{profile.job_type}})</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Higher Study</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.higher_study}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Country</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.present_country}}</p>
+                                    </div>
+                                </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Present Address</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.present_address}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Permanent Address</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.prmanent_address}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Mobile</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.mobile}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Gmail</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profile.user.email}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Facebook</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href=""><p>{{profile.facebook}}</p></a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Linkdin</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href=""><p>{{profile.linkdin}}</p></a>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>           
+</div>
+{% endblock %}

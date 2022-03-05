@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Admin View</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/myadmin.css' %}">
+</head>
+
+<body>
+    <div class="container my_admin">
+        <h2 class="title1 p-4">Admin Panel<sub class="btn btn-danger btn-sm p-0 ml-1" style="font-weight: 700;">{{request.user}}</sub></h2>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <!-- <a class="navbar-brand" href="#">Alumni Management System Of KU</a> -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav m-auto">
+                    {% with request.resolver_match.url_name as url_name %}
+                    <li class="{% if url_name == 'my_admin_view' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'my_admin_view' %}">Verification</a>
+                    </li>
+                    <li class="{% if url_name == 'admin_event_view' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'admin_event_view' %}">Events</a>
+                    </li>
+                    <li class="{% if url_name == 'admin_fee_view' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'admin_fee_view' %}">Fee</a>
+                    </li>
+                    <li class="{% if url_name == 'admin_news_view' %}nav-item active{% endif %}">
+                        <a class="nav-link" href="{% url 'admin_news_view' %}">News Letter</a>
+                    </li>
+                    {% endwith %}
+            </div>
+        </nav>
+        {% block content %}{% endblock %}
+        <!-- <div class="admin_nav pb-3" style="text-align: center;">
+            <a href="" style="color: grey;text-decoration: none;" class="nav-item active">Alumni Verification</a>
+            <a href="" style="color: grey;text-decoration: none;">Event Handling</a>
+        </div> -->
+    </div>
+    <script>
+       function myFunction() {
+        var items = document.getElementsByName('alumni_name');
+        var checkBox = document.getElementById("myCheck");
+        if (checkBox.checked==true){
+            for (var i = 0; i < items.length; i++) {
+            if (items[i].type == 'checkbox')
+                items[i].checked = true;
+        }
+        }else{
+            for (var i = 0; i < items.length; i++) {
+            if (items[i].type == 'checkbox')
+                items[i].checked = false;
+        }
+        }
+    }
+    function myFunction1() {
+        var items = document.getElementsByName('alumni_name1');
+        var checkBox = document.getElementById("myCheck1");
+        if (checkBox.checked==true){
+            for (var i = 0; i < items.length; i++) {
+            if (items[i].type == 'checkbox')
+                items[i].checked = true;
+        }
+        }else{
+            for (var i = 0; i < items.length; i++) {
+            if (items[i].type == 'checkbox')
+                items[i].checked = false;
+        }
+        }
+    }
+
+
+    // function UnSelectAll() {
+    //     var items = document.getElementsByName('acs');
+    //     for (var i = 0; i < items.length; i++) {
+    //         if (items[i].type == 'checkbox')
+    //             items[i].checked = false;
+    //     }
+    // }	
+    </script>
+</body>
+
+</html>

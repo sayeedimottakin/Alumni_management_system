@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="update_profile_form">
+    <div class="container">
+        <h2>Profile Form</h2>
+        <form action="{% url 'process_create_profile' user.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="full_name">Full Name:</label>
+                        {{ form.full_name }}
+                    </div>
+                    <div class="form-group">
+                        <label for="profile_picture">Select a profile picture:</label><br>
+                        {{ form.profile_pic }}
+                    </div>
+                    <div class="form-group">
+                        <label for="certificate">Select your graduation certificate:</label><br>
+                        {{ form.certificate }}
+                    </div>
+                    <div class="form-group">
+                        <label for="discipline">Discipline (select one):</label>
+                        {{ form.discipline }}
+                    </div>
+                    <div class="form-group">
+                        <label for="batch">Batch (select one):</label>
+                        {{ form.batch}}
+                    </div>
+                    <div class="form-group">
+                        <label for="id">ID (select one):</label>
+                        {{ form.student_id }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id">Job type(select one):</label>
+                        {{ form.job_type }}
+                    </div>
+                    <div class="form-group">
+                        <label for="about_me">Job Poistion and Company Name:</label>
+                        {{ form.job_posi }}
+                    </div>
+                    
+                    <!-- <div class="form-group">
+                        <label for="full_name">Full Name:</label>
+                        <input type="text" class="form-control" id="full_name" placeholder="Enter Your Full Name"
+                            name="full_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="sel1">Discipline (select one):</label>
+                        <select class="form-control" id="sel1" name="sellist1" style="font-weight: 600;">
+                            {% for discipline in discipline_list %}
+                            <option value="{{discipline}}">{{discipline}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel1">Batch (select one):</label>
+                        <select class="form-control" id="sel1" name="sellist1" style="font-weight: 600;">
+                            {% for batch in batch_list %}
+                            <option value="{{batch}}">{{batch}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sel1">ID (select one):</label>
+                        <select class="form-control" id="sel1" name="sellist1" style="font-weight: 600;">
+                            {% for id in id_list %}
+                            <option value="{{id}}">{{id}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="job">Job:</label>
+                        <input type="text" class="form-control" id="job" placeholder="Enter Your Job"
+                            name="job">
+                    </div>
+                    <div class="form-group">
+                        <label for="higher_study">Higher Study:</label>
+                        <input type="text" class="form-control" id="higher_study" placeholder="Enter Your Higher Study"
+                            name="higher_study">
+                    </div>
+                    <div class="form-group">
+                        <label for="sel1">Country (select one):</label>
+                        <select class="form-control" id="sel1" name="sellist1" style="font-weight: 600;">
+                            {% for country in country_list %}
+                            <option value="{{country}}">{{country}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="about_me">About Me:</label>
+                        <textarea class="form-control" rows="3" id="about_me" name="about_me"></textarea>
+                    </div> -->
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="higher_study">Higher Study:</label>
+                        {{ form.higher_study}}
+                    </div>
+                    <div class="form-group">
+                        <label for="present_address">Present Address:</label>
+                        {{ form.present_address }}
+                    </div>
+                    <div class="form-group">
+                        <label for="present_country">Present Country (select one):</label>
+                        {{ form.present_country }}
+                    </div>
+                    <div class="form-group">
+                        <label for="Parmanent_address">Parmanent Address:</label>
+                        {{ form.parmanent_address }}
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile:</label>
+                        {{ form.mobile}}
+                    </div>
+                    <div class="form-group">
+                        <label for="facebook">Facebook For Contact:</label>
+                        {{ form.facebook }}
+                    </div>
+                    <div class="form-group">
+                        <label for="linkdin">Linkdin For Contact:</label>
+                        {{ form.linkdin }}
+                    </div>
+                    <div class="form-group">
+                        <label for="about_me">About Me:</label>
+                        {{ form.about_me }}
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="present_address">Present Address:</label>
+                        <input type="text" class="form-control" id="present_address" placeholder="Enter Your Present Address"
+                            name="present_address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="permanent_address">Permanent Address:</label>
+                        <input type="text" class="form-control" id="permanent_address" placeholder="Enter Your Permanent Address"
+                            name="permanent_address">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile:</label>
+                        <input type="text" class="form-control" id="mobile" placeholder="Mobile No"
+                            name="mobile">
+                    </div>
+                    <div class="form-group">
+                        <label for="facebook">Facebook For Contact:</label>
+                        <input type="text" class="form-control" id="facebook" placeholder="Facebook Account Link"
+                            name="facebook">
+                    </div>
+                    <div class="form-group">
+                        <label for="linkdin">Linkdin For Contact:</label>
+                        <input type="text" class="form-control" id="linkdin" placeholder="linkdin Account Link"
+                            name="linkdin">
+                    </div>
+                    <div class="form-group">
+                        <label for="show_case">Show-Case:</label>
+                        <textarea class="form-control" rows="2" id="show_case" name="show_case"></textarea>
+                    </div>
+                    <label for="profile_picture">Select a profile picture:</label><br>
+                    <input type="file" id="profile_picture" name="profile_picture">
+                    <br>
+                    <label for="graduation_certificate" class="pt-3">Select your graduation graduation certificate:</label><br>
+                    <input type="file" id="graduation_certificate" name="graduation_certificate"> -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

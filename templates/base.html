@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .my_fade{
+            bottom: -60px;
+            opacity: 0;
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: .10em solid blue;
+            white-space: nowrap;
+            margin: 0 auto;
+            /* letter-spacing: .15em; */
+            animation:
+                typing 3s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        /* The typewriter cursor effect */
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: blue;
+            }
+        }
+
+        .edit_profile_select {
+            font-weight: 400;
+            width: 100%;
+            padding: 5px;
+            border: none;
+        }
+
+        /* fee home */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: gray;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            font-weight: 600;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 12px;
+            transition: 0.3s;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ccc;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: rgb(236, 232, 232);
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            /* border: 1px solid rgb(180, 170, 170); */
+            border-top: none;
+        }
+        .my_active{
+            color: red;
+            text-decoration: underline;
+          }
+      </style>
+    <script>
+        $(document).ready(function () {
+            $("#change_bg").click(function () {
+                $(".table-secondary").toggleClass("table-dark");
+            });
+        });
+    </script>
+    <script>
+        // function openFee(evt, feeName) {
+        //     var i, tabcontent, tablinks;
+        //     tabcontent = document.getElementsByClassName("tabcontent");
+        //     for (i = 0; i < tabcontent.length; i++) {
+        //         tabcontent[i].style.display = "none";
+        //     }
+        //     tablinks = document.getElementsByClassName("tablinks");
+        //     for (i = 0; i < tablinks.length; i++) {
+        //         tablinks[i].className = tablinks[i].className.replace(" active", "");
+        //     }
+        //     document.getElementById(feeName).style.display = "block";
+        //     evt.currentTarget.className += " active";
+        // }
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#myTab a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+    </script>
+    <!-- <script src="{% static 'home/fade.js' %}"></script> -->
+    <link rel="stylesheet" href="{% static 'profile/profile_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script>
+        $(document).ready(function () {
+            $(window).scroll(function () {
+                $('.my_fade').each(function (i) {
+
+                    var bottom_of_object = $(this).position().top + $(this).outerHeight();
+                    var bottom_of_window = $(window).scrollTop() + $(window).height();
+
+                    if (bottom_of_window > bottom_of_object) {
+
+                        $(this).animate({ 'opacity': '1',bottom:'0px', }, 1200);
+                        // $(this).animate({  left: '50px' }, 2000);
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a href="{% url 'home' %}"><span class="navbar-brand mb-0 h1">Alumni Management System</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav m-auto">
+                {% if request.user.alumni.is_verified %}
+                <li class="nav-item ">
+                    <a class="nav-link" style="font-weight: 600;color: beige;"
+                        href="{% url 'discipline_view' %}">{{request.user.alumni.discipline}}</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" style="font-weight: 600;color: beige;"
+                        href="{% url 'alumni_fee_home' request.user.alumni.id %}">Alumni Fee</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" style="font-weight: 600;color: beige;" href="{% url 'event_view' %}">Events</a>
+                </li>
+                {% endif %}
+                <li class="nav-item ">
+                    <a class="nav-link" style="font-weight: 600;color: beige;" href="{% url 'search_view' %}">Search
+                        Alumni</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" style="font-weight: 600;color: beige;" href="{% url 'welcome_view' %}">Social
+                        Media</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" style="font-weight: 600;color: beige;" href="{% url 'news_view' current_news_letter.id %}">News Letter</a>
+                </li>
+
+
+                <li class="nav-item ">
+                    <a class="nav-link" style="font-weight: 600;color: lightgreen;font-size: large;"
+                        href="{% url 'alumni_profile' user.id %}">{{request.user}}</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" action="{% url 'advance_search_result' %}" method="POST">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search"
+                    aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    {% block content %}{% endblock %}
+    <!-- Footer Links -->
+    <div class="container text-center text-md-left mt-5">
+        <!-- Grid row -->
+        <div class="row mt-3">
+
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-4" style="font-weight: 600;">
+
+                <!-- Links -->
+                <h6 class="text-uppercase font-weight-bold">Services</h6>
+                <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <p>
+                    Data Store Of Alumni
+                </p>
+                <p>
+                    University Notice
+                </p>
+                <p>
+                    Social Media Purpose
+                </p>
+                <p>
+                    Image Gallery
+                </p>
+
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-4">
+
+                <!-- Links -->
+                <h6 class="text-uppercase font-weight-bold">Useful links</h6>
+                <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <p>
+                    <a href="#!">Khulna University</a>
+                </p>
+                <p>
+                    <a href="#!">Facebook</a>
+                </p>
+                <p>
+                    <a href="#!">Linkdin</a>
+                </p>
+                <p>
+                    <a href="#!">Instragram</a>
+                </p>
+
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-md-0 mb-4" style="font-weight: 600;">
+
+                <!-- Links -->
+                <h6 class="text-uppercase font-weight-bold">Contact</h6>
+                <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <!-- <p>
+              <i class="fa fa-home mr-3"></i> Gollamari,Khulna</p>-->
+                <p>
+                    <a href="mailto:mukithasanpranto4@gmail.com">mukithasanpranto4@gmail.com</a>
+                </p>
+                <p>
+                    +880 1980492420</p>
+
+
+            </div>
+            <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
+    </div>
+    <!-- Footer Links -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3" style="background-color: dimgrey;font-weight: 600;">© 2020 Copyright:
+        <a href="#" style="color: black;font-weight: 700;"> AMSKU.com</a>
+    </div>
+    <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+    <script>
+        function advance_fee_cal() {
+            var items = document.getElementsByName('advance_year');
+            var amount = "{{yearFee}}"
+            var count = 0;
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].checked == true) {
+                    count++;
+                    document.getElementById("advance_year").innerHTML = count;
+                    document.getElementById("advance_amount").innerHTML = amount * count;
+                }
+            }
+            if (count == 0) {
+                document.getElementById("advance_year").innerHTML = 0;
+                document.getElementById("advance_amount").innerHTML = 0;
+            }
+        }
+            // function DoSubmit(sel) {
+
+            //     if (sel.val() != '1') this.form.submit();
+            // }
+    </script>
+    <!-- <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById("myImg");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        img.onclick = function(){
+          modal.style.display = "block";
+          modalImg.src = this.src;
+          captionText.innerHTML = this.alt;
+        }
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+          modal.style.display = "none";
+        }
+        </script> -->
+
+</body>
+
+</html>

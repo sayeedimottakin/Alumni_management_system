@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% if anchor %}
+<script>
+$(document).ready(function(){
+    window.location = '#{{anchor}}'
+});
+</script>
+{% endif %}
+<div class="social_media_view" style="border-bottom: 2px solid black;">
+    <div class="container">
+        <!-- <h2 class="title">Filter The Posts</h2>
+        <form action="" id="social_media_filter">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sel1">Select Tag:</label>
+                        <select class="form-control" id="sel1" name="sellist1">
+                            <option>All</option>
+                            <option>Job Circular</option>
+                            <option>Educational Blog</option>
+                            <option>Higher Study Opportunities</option>
+                            <option>Publications</option>
+                            <option>Achievements</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sel1">Select Discipline:</label>
+                        <select class="form-control" id="sel1" name="sellist1">
+                            {% for dip in disciplines %}
+                            <option value="{{dip}}">{{dip}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="sel1">Select Batch:</label>
+                        <select class="form-control" id="sel1" name="sellist1">
+                            {% for bat in batch %}
+                            <option value="{{bat}}">{{bat}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-danger" style="float: right;">Filter</button>
+                </div>
+            </div>
+        </form>
+        <hr> -->
+        <h2 class="title">Post Something</h2>
+        <form action="{% url 'social_media_view' %}" method="POST" class="write_post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group mb-0">
+                {{post_form.body}}
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group badge badge-dark p-2">
+                        <label for="" style="font-weight: 600;">Select a Tag (Required):</label>
+                        {{post_form.tag}}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group badge badge-dark p-2">
+                        <label style="font-weight: 600;">Image (If Needed):</label>
+                        {{ post_form.image }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group badge badge-dark p-2">
+                    <label style="font-weight: 600;">File (If Needed):</label>
+                    {{ post_form.files }}
+                </div>
+            </div>
+              </div>
+            <button type="submit" style="display: block;font-weight: 600;" class="btn btn-dark mt-2">Post</button>
+        </form>
+    </div>
+</div>
+
+<div class="post_list" id="post_list" style="background-color: lightgray;">
+    <div class="container">
+        <button class="btn btn-success btn-sm m-2">
+            <form action="{% url 'social_media_view' %}" method="POST">
+                {% csrf_token %}
+                <label for="" style="font-weight: 600;">Manage Posts: </label>
+                <select name="manage_post" class="p-1" style="background-color:lightgray;font-weight: 600;border-radius: 5px;" onchange="if(this.value != 0) { this.form.submit(); }">
+                    <option value="0">Select Here</option>
+                    <option value="1">Newest First</option>
+                    <option value="2">Oldest First</option>
+                </select>
+            </form>
+        </button>
+        {% for post in posts %}
+        <div class="media p-3" id="post{{forloop.counter}}">
+            <img src="{{post.author.image.url}}" class="mr-3 mt-3 rounded-circle " style="width:60px;">
+            <div class="media-body" style="color: black;font-weight: 600;">
+                <h5 style="color: brown;font-weight: 700;"><a style="text-decoration: none;" href="{% url 'search_result_details' post.author.id %}">{{post.author}}</a><small style="color: rgb(126, 54, 54);"><i>
+                            Posted on
+                            {{post.created_on.date}}</i></small></h5>
+                <p style="font-size: large;padding-left: 25px;">{{post.body}}</p>
+                {% if post.image %}
+                <button style="border:none;padding: 0;" type="button" data-toggle="modal" data-target="#image_modal{{post.id}}">
+                    <div style="height: 250px;width: 250px;">
+                        <img id="myImg" src="{{post.image.url}}" alt="image" style="width: 100%;
+                    height: 100%;
+                    object-fit: cover;">
+                </div>
+                </button>
+                <br>
+                <div class="modal fade" id="image_modal{{post.id}}">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+    
+                            <!-- Modal Header -->
+                            <!-- <div class="modal-header">
+                                <button class="btn btn-success"><a class="text-light" href="{{post.image.url}}" download>Download</a></button>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div> -->
+    
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <img src="{{post.image.url}}" alt="image" style="width: 100%;
+                        height: 100%;
+                        object-fit: cover;">
+                            </div>
+    
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button class="btn btn-success"><a class="text-light" href="{{post.image.url}}" download>Download</a></button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if post.files %}
+                <a href="{{post.files.url}}" download>{{post.files}}</a>
+                {% endif %}
+                <h5><span class="badge badge-pill badge-secondary">{{post.tag}}</span>
+                </h5>
+                <a href="{% url 'post_details' post.id %}"><button type="button" class="btn btn-success">Comments <span
+                    class="badge badge-light">{{post.comment_set.all.count}}</span></button></a>
+                {% if post.author == request.user.alumni %}
+                <a href="{% url 'post_details' post.id %}"><button type="button" class="btn btn-dark">Edit</button></a>
+                <form action="{% url 'delete_post' post.id %}" method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <hr>
+        {% if posts.has_other_pages %}
+        <ul class="pagination justify-content-center">
+            {% if posts.has_previous %}
+            <li class="page-item"><a class="page-link bg-secondary text-light"
+                    href="?page={{ posts.previous_page_number }}#post_list">Previous</a></li>
+            {% endif %}
+            {% for i in posts.paginator.page_range %}
+            {% if posts.number == i %}
+            <li class="page-item active"><a class="page-link" href="?page={{ i }}#post_list">{{i}}</a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link bg-dark text-light" href="?page={{ i }}#post_list">{{i}}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+            <li class="page-item"><a class="page-link bg-secondary text-light"
+                    href="?page={{ posts.next_page_number }}#post_list">Next</a></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+        <br>
+
+        <!-- {% if posts.has_other_pages %}
+        <ul class="pagination">
+            {% if posts.has_previous %}
+            <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in posts.paginator.page_range %}
+            <li><a href="?page={{ i }}">{{i}}</a></li>
+            {% if posts.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+            <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+        {% endif %} -->
+    </div>
+</div>
+
+{% endblock %}

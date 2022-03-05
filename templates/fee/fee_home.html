@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div style="background-color: lightgrey;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <h2 style="padding-top: 20px;
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Alumni Fee</h2>
+                <hr>
+                <h5 style="text-align: center;"><span class="badge badge-light">Alumni Verified at {{alumni_fee.created_on.date}}</span></h5>
+                <div>
+                    <ul class="nav nav-tabs" id="myTab" style="border-bottom: 1px solid gray;">
+                        <li class="nav-item">
+                            <a href="#reg_fee" class="nav-link active" data-toggle="tab">Registration Fee</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#yearly_fee" class="nav-link" data-toggle="tab">Yearly Fee</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#life_time_fee" class="nav-link" data-toggle="tab">Life Time Fee</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="reg_fee" class="tab-pane fade show active">
+                            <h5>Registration Fee <span class="badge badge-dark">{{fee_info.registration_fee}}</span> Taka</h5>
+                    <h5><span class="badge badge-primary">Status: </span>{% if due.0 %}
+                        <button type="button" class="btn btn-danger">
+                            Due <span class="badge badge-light">{{due.0}}</span> Taka
+                        </button>
+                        {% else %}
+                        <button type="button" class="btn btn-success">
+                            Paid
+                        </button>
+                        {% endif %}
+
+                    </h5>
+                    {% if due.0 %}
+                    <form class="form-inline" action="{% url 'reg_fee' request.user.alumni.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-secondary">
+                        <span class="badge badge-light">{{fee_info.registration_fee}}</span> Taka
+                        </button>
+                        <input type="submit" value="Send Money" class="btn btn-success ml-1">
+                    </form>
+                    {% endif %}
+                        </div>
+                        <div id="yearly_fee" class="tab-pane fade">
+                            <h5>Yearly Fee <span class="badge badge-dark">{{fee_info.yearly_fee}}</span> Taka</h5>
+                        <h5 style="text-align: center;">List Of Yearly Fees</h5>
+                        <table class="table table-dark">
+                            <thead>
+                              <tr>
+                                <th>Year</th>
+                                <th>Amount</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {% for x in yearly_fees %}
+                              <tr>
+                                <td>{{x.year}}</td>
+                                <td>{{x.amount}}</td>
+                                <td>
+                                    {% if x.is_paid %}
+                                    <h5><span class="badge badge-success">Paid</span></h5>
+                                    {% else %}
+                                    <form class="form-inline" action="{% url 'yearly_fee' request.user.alumni.id x.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="submit" value="Send Money" class="btn btn-primary ml-1">
+                                    </form>
+                                    {% endif %}
+                                </td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                          <h5 style="text-align: center;">Advance Pay For Future Years</h5>
+                          <div class="advance_fee container text-light bg-dark p-3">
+                              <h6>Select Year(You can select multiple)</h6>
+                              <form action="{% url 'advance_yearly_fee' request.user.alumni.id %}" method="POST">
+                                  {% csrf_token %}
+                                {% for year in advance_years %}
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                  <input type="checkbox" name="advance_year" class="form-check-input" value="{{year}}" onclick="advance_fee_cal()">{{year}}
+                                </label>
+                              </div>
+                              {% endfor %}
+                              <button type="button" class="btn btn-secondary btn-lg mb-2 mt-2">
+                                Total Amount: Year <span class="badge badge-light" id="advance_year">0</span> * <span class="badge badge-light">{{fee_info.yearly_fee}}</span> = <span id="advance_amount" class="badge badge-light">0</span>
+                              </button>
+                              <br>
+                              <input type="submit" value="Send Money" class="btn btn-success">
+                              </form>
+                          </div>
+                        </div>
+                        <div id="life_time_fee" class="tab-pane fade">
+                            <h5>Life Time Fee <span class="badge badge-dark">{{fee_info.life_time_fee}}</span> Taka</h5>
+                    <h5><span class="badge badge-primary">Status: </span>{% if due.1 %}
+                        <button type="button" class="btn btn-danger">
+                            Due <span class="badge badge-light">{{due.1}}</span> Taka
+                        </button>
+                        {% else %}
+                        <button type="button" class="btn btn-success">
+                            Paid
+                        </button>
+                        {% endif %}
+                    </h5>
+                    {% if due.1 %}
+                    <form class="form-inline" action="{% url 'life_time_fee' request.user.alumni.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-secondary">
+                        <span class="badge badge-light">{{fee_info.life_time_fee}}</span> Taka
+                        </button>
+                        <input type="submit" value="Send Money" class="btn btn-success ml-1">
+                    </form>
+                    {% endif %}
+                        </div>
+                    </div>
+                </div>    
+                <br>
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

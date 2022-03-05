@@ -1,0 +1,127 @@
+{% extends "my_admin/base.html" %}
+{% load static %}
+{% block content %}
+<div class="bg-dark text-white">
+    <h5 style="text-align: center;">Create An Event?</h5>
+    <form action="" style="text-align: center;">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+            Create
+          </button>
+    </form>
+        
+  <!-- The Modal -->
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content bg-dark">
+          
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Create An Event</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color: wheat;">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form action="{% url 'admin_event_view' %}" method="POST">
+                    {% csrf_token %}
+                    {{form}}
+                    <br>
+                    <input  type="submit" value="Done" class="btn btn-success">
+                </form>
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    <hr style="background-color: wheat;">
+    <h3 style="text-align: center;">Present Events</h3>
+    <table class="table table-dark table-hover table-responsive-sm">
+        <thead>
+            <tr>
+                <th>Event Headline</th>
+                <th>Expected Amount</th>
+                <th>Current Amount</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{event.headline}}</td>
+                <td>{{event.target_amount}}</td>
+                <td>{{event.present_amount}}</td>
+                <td>
+                    <div class="row">
+                        <div class="col m-0 p-0">
+                            <form action="{% url 'admin_event_details' event.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">Details</button>
+                            </form>
+                        </div>
+                        <div class="col m-0 p-0">
+                            <form action="{% url 'admin_event_edit' event.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary"> Edit </button>
+                            </form>
+                        </div>
+                        <div class="col m-0 p-0">
+                            <form action="">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3 style="text-align: center;">Previous Events</h3>
+    <table class="table table-dark table-hover table-responsive-sm">
+        <thead>
+            <tr>
+                <th>Event Headline</th>
+                <th>Expected Amount</th>
+                <th>Current Amount</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in past %}
+            <tr>
+                <td>{{event.headline}}</td>
+                <td>{{event.target_amount}}</td>
+                <td>{{event.present_amount}}</td>
+                <td>
+                    <div class="row">
+                        <div class="col m-0 p-0">
+                            <form action="{% url 'admin_event_details' event.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">Details</button>
+                            </form>
+                        </div>
+                        <div class="col m-0 p-0">
+                            <form action="{% url 'admin_event_edit' event.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary"> Edit </button>
+                            </form>
+                        </div>
+                        <div class="col m-0 p-0">
+                            <form action="{% url 'admin_event_delete' event.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

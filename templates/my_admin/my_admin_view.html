@@ -1,0 +1,110 @@
+{% extends "my_admin/base.html" %}
+{% load static %}
+{% block content %}
+<table class="table table-dark table-hover table-responsive-sm">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Discipline</th>
+            <th>Batch</th>
+            <th>ID</th>
+            <th>Certificate</th>
+            <th>Operation</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for people in people_list %}
+        <tr>
+            <td>{{people.full_name}}</td>
+            <td>{{people.discipline}}</td>
+            <td>{{people.batch}}</td>
+            <td>{{people.student_id}}</td>
+            <td><a href="{{people.certificate.url}}" download><button class="btn btn-info">Download
+                    </button></a></td>
+            <td>
+                <div class="row">
+                    <div class="col m-0 p-0">
+                        <form action="{% url 'admin_operation_accept' people.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Accept</button>
+                        </form>
+                    </div>
+                    <div class="col m-0 p-0">
+                        <!-- {% url 'admin_operation_update' people.id %} -->
+                        <form action="">
+                            {% csrf_token %}
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_certificate">Update</button>
+                        </form>
+                        <div class="modal fade" id="update_certificate">
+                            <div class="modal-dialog">
+                              <div class="modal-content bg-dark">
+                              
+                                <!-- Modal Header -->
+                                <!-- <div class="modal-header">
+                                  <h4 class="modal-title">Create An Event</h4>
+                                  <button type="button" class="close" data-dismiss="modal" style="color: wheat;">&times;</button>
+                                </div> -->
+                                
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    <form action="{% url 'admin_operation_update' people.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <label for="message" style="font-size: large;">Message:</label>
+                                        <textarea name="message" id="message" rows="5" class="form-control"></textarea>
+                                        <br>
+                                        <input  type="submit" value="Done" class="btn btn-success">
+                                    </form>
+                                </div>
+                                
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col m-0 p-0">
+                        <!-- {% url 'admin_operation_reject' people.id %} -->
+                        <form action="">
+                            {% csrf_token %}
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#reject_alumni">Reject</button>
+                        </form>
+                        <div class="modal fade" id="reject_alumni">
+                            <div class="modal-dialog">
+                              <div class="modal-content bg-dark">
+                              
+                                <!-- Modal Header -->
+                                <!-- <div class="modal-header">
+                                  <h4 class="modal-title">Create An Event</h4>
+                                  <button type="button" class="close" data-dismiss="modal" style="color: wheat;">&times;</button>
+                                </div> -->
+                                
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    <form action="{% url 'admin_operation_reject' people.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <label for="message" style="font-size: large;">Message:</label>
+                                        <textarea name="message" id="message" rows="5" class="form-control"></textarea>
+                                        <br>
+                                        <input  type="submit" value="Done" class="btn btn-success">
+                                    </form>
+                                </div>
+                                
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

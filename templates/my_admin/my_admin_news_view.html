@@ -1,0 +1,165 @@
+{% extends "my_admin/base.html" %}
+{% load static %}
+{% block content %}
+<div class="bg-dark text-light">
+    <div class="row">
+        <div class="col-sm-8">
+            <nav class="navbar">
+                <ul class="navbar-nav">
+                    {% for x in news_letter %}
+                    <li class="nav-item">
+                        <a class="nav-link text-light" style="display: inline;" href="#news_letter{{x.id}}">{{forloop.counter}}. {{x.title}} ({{x.start_date}} to {{x.end_date}})</a>
+                        <a href="{% url 'admin_news_letter_update' x.id %}"><button type="button" class="btn btn-primary btn-sm py-0">Edit</button></a>
+                        <a href="{% url 'admin_news_letter_delete' x.id %}"><button class="btn btn-danger btn-sm py-0">Delete</button></a>
+                      </li>
+                {% endfor %}
+                </ul>
+              
+              </nav>
+        </div>
+        <div class="col-sm-4" style="border-left: 2px white solid;">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal_news_letter_create">
+                    Create News Letter
+                </button>
+            
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal_news_create">
+                    Create News
+                </button>
+            
+        </div>
+    </div>
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal_news_letter_create">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title text-primary">Add a News Letter</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form action="{% url 'admin_news_view' %}" method="POST" style="font-weight:600;">
+                        {% csrf_token %}
+                        {{news_letter_form}}
+                        <br>
+                        <input type="submit" value="Submit" class="btn btn-success mt-2">
+                    </form>
+                </div>
+
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal_news_create">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title text-primary">Add a News</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form action="{% url 'admin_news_view' %}" method="POST" style="font-weight:600;">
+                        {% csrf_token %}
+                        {{news_form}}
+                        <br>
+                        <input type="submit" value="Submit" class="btn btn-success mt-2">
+                    </form>
+                </div>
+
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <hr style="background-color: wheat;">
+        <h4 style="text-align: center;">Pending News</h4>
+        <table class="table table-dark table-hover table-responsive-sm">
+            <thead class="p-2">
+                <tr>
+                    <th>Headline</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <!-- <th></th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for news in pending_news %}
+                <tr>
+                    <td>{{news.headline| slice:":40"}}...</td>
+                    <td>
+                        <a href="{% url 'admin_news_update' news.id %}"><button class="btn btn-info">Details or
+                                Edit</button></a>
+                    </td>
+                    <td>
+                        <form action="{% url 'admin_news_approve' news.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" value="Approve" class="btn btn-success">
+                        </form>
+                    </td>
+                    <!-- <td>
+                        <button class="btn btn-primary">Send Notification</button>
+                    </td> -->
+                    <td>
+                        <form action="{% url 'admin_news_delete' news.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container">
+        {% for x in news_letter %}
+        <hr style="background-color: wheat;">
+        <h4 style="text-align: center;" id="news_letter{{x.id}}">{{x.title}}</h4>
+        <table class="table table-dark table-hover table-responsive-sm">
+            <thead class="p-2">
+                <tr>
+                    <th>Headline</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for news in x.news.all %}
+                <tr>
+                    <td>{{news.headline| slice:":30"}}...</td>
+                    <td>
+                        <a href="{% url 'admin_news_update' news.id %}"><button class="btn btn-info">Details or
+                                Edit</button></a>
+                    </td>
+                    <td>
+                        <form action="{% url 'admin_news_delete' news.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endfor %}
+    </div>
+    {% endblock %}

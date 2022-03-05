@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% load social_share %}
+{% block content %}
+<div class="container text-center">
+    <h2 style="padding-top: 20px;
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">{{news.headline}}</h2>
+    <hr>
+</div>
+<div class="container">
+    {% if news.image %}
+    <div class="text-center">
+        <img src="{{news.image.url}}" alt="" style="height: 400px; width: 500px; object-fit: cover;">
+    </div>
+    {% endif %}
+    <h5>{{news.description}}</h5>
+    <br>
+    <div style="display: inline-flex;">
+        <button class="btn btn-dark p-0" style="font-weight: 600;">Share The News With:</button>
+        <p class="mx-1">{% post_to_facebook object_or_url "" %}</p>
+    <p class="mx-1">{% post_to_linkedin object_or_url %}</p>
+    <p class="mx-1">{% post_to_whatsapp object_or_url "" %}</p>
+    </div>
+    
+</div>
+{% endblock %}

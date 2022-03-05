@@ -1,0 +1,12 @@
+{% extends "my_admin/base.html" %}
+{% load static %}
+{% block content %}
+<div class="bg-dark text-light">
+    <h5 style="text-align: center;">Edit The News Letter</h5>
+    <form action="{% url 'admin_news_letter_update' news_letter.id %}" method="POST" class="container">
+        {{form}}
+        <br>
+        <input type="submit" value="Submit" class="btn btn-success my-3">
+    </form>
+</div>
+{% endblock %}

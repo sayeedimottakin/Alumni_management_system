@@ -1,0 +1,12 @@
+/* My admin */
+body{
+    background-color: cadetblue;
+}
+.my_admin .title1{
+    text-align: center;
+    font-weight: 700;
+  }
+
+.op{
+    display: inline;
+}
